@@ -16,6 +16,11 @@ var rotateDifZ = 0;
 var mountains = [];
 
 var tr2 = {
+	position: {
+		theta: 0,
+		x: 0,
+		y: 0,
+	},
 	link: {
 		b0: '',
 		b1: '',
@@ -95,152 +100,4 @@ function draw() {
 	drawSun();
 	drawMountains();
 	drawTerminal(tr2);
-}
-
-function moveCamera () {
-	scale(canvasScale);
-
-	var defaultX = 80;
-	var defaultZ = 150;
-	var angleX = defaultX + rotateDifZ;
-	var angleZ = defaultZ + rotateDifX;
-
-	if (angleX > 80) {
-		angleX = 80;
-		rotateDifZ = 80 - defaultX;
-	} else if (angleX < 45) {
-		angleX = 45;
-		rotateDifZ = 45 - defaultX;
-	}
-
-	rotateX(angleX);
-	rotateZ(angleZ);
-	translate(0, 0, -120);
-}
-
-var lastX;
-var lastY;
-
-var minScale = 1.0;
-var maxScale = 2.0;
-var mWheelVar = 0;
-function mouseWheel (event) {
-	if (cameraLock == true) {
-		return;
-	}
-
-	canvasScale = canvasScale - event.delta / 500.0;
-	if (canvasScale > maxScale) {
-		canvasScale = maxScale;
-	} else if (canvasScale < minScale) {
-		canvasScale = minScale;
-	}
-}
-
-function mouseClicked() {
-	lastX = '';
-	lastY = '';
-}
-
-function mouseDragged() {
-	if (cameraLock == true) {
-		return;
-	}
-
-	if (!lastX) {
-		lastX = mouseX;
-	}
-	if (!lastY) {
-		lastY = mouseY;
-	}
-
-	rotateDifX = rotateDifX + ((lastX - mouseX) / 10);
-	rotateDifZ = rotateDifZ + ((lastY - mouseY) / 10);
-
-	lastX = mouseX;
-	lastY = mouseY;
-}
-
-function polygon(x, y, radius, npoints) {
-  let angle = 360 / npoints;
-  beginShape();
-  for (let a = 0; a <= 360; a += angle) {
-    let sx = x + cos(a) * radius;
-    let sy = y + sin(a) * radius;
-		vertex(sx, sy);
-  }
-  endShape(CLOSE);
-}
-
-function drawMountains () {
-	push();
-	translate(0, canvasHeight * 5, 0);
-	rotateX(-90);
-
-	stroke('cyan');
-	fill('black');
-	strokeWeight(4);
-
-	for (var i = 0; i < mountains.length; i++) {
-		var t = mountains[i];
-		triangle(t[0], t[1], t[2], t[3], t[4], t[5]);
-	}
-	pop();
-}
-
-function drawLogo () {
-	push();
-	stroke('cyan');
-	fill('cyan');
-	rotateZ(90)
-  polygon(0, 0, 100, 6);
-
-	noFill();
-	polygon(0, 0, 100 + (frameCount % 600) * 0.2, 6);
-	polygon(0, 0, 100 + (frameCount % 510) * 0.2, 6);
-	polygon(0, 0, 100 + (frameCount % 380) * 0.2, 6);
-	pop();
-}
-
-function drawSun () {
-	push();
-	translate(0, (canvasHeight * 6) + 15, 0);
-	rotateX(-90);
-
-	stroke('orange');
-	fill('orange');
-	translate(0, 0, -10);
-	circle(-2000, -1250, 2000);
-	pop();
-
-	push();
-	translate(0, (canvasHeight * 6) + 15, 0);
-	rotateX(90);
-	rotateZ(180);
-
-	fill('white');
-	textFont(font_tomorrow);
-	textSize(250);
-	text('Slate Robotics', -1000, -1100);
-	pop();
-}
-
-function drawPlane () {
-	push();
-	stroke('magenta');
-	strokeWeight(1);
-
-	gridOffsetY += 1.5;
-	if (gridOffsetY >= gridSize) {
-		gridOffsetY -= gridSize;
-	}
-
-	for (var x = -canvasWidth * 5; x <= canvasWidth * 5; x += gridSize) {
-		line(x, -canvasHeight * gridMultiplier, x, canvasHeight * gridMultiplier);
-	}
-
-	for (var y = -canvasHeight * 5; y <= canvasHeight * 5; y += gridSize) {
-		line(-canvasWidth * gridMultiplier, y + gridOffsetY, canvasWidth * gridMultiplier, y + gridOffsetY);
-	}
-	pop();
 }

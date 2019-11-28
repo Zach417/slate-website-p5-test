@@ -109,6 +109,29 @@ function setupTerminal() {
 }
 
 function drawTerminal (tr2) {
+	var LEFT_ARROW = 37;
+	var UP_ARROW = 38;
+	var RIGHT_ARROW = 39;
+	var DOWN_ARROW = 40;
+
+	if (keyIsDown(LEFT_ARROW)) {
+		tr2.position.theta = tr2.position.theta - 5;
+	} else if (keyIsDown(RIGHT_ARROW)) {
+		tr2.position.theta = tr2.position.theta + 5;
+	}
+
+	if (keyIsDown(UP_ARROW)) {
+		tr2.position.x = tr2.position.x + sin(tr2.position.theta) * 5;
+		tr2.position.y = tr2.position.y - cos(tr2.position.theta) * 5;
+	} else if (keyIsDown(DOWN_ARROW)) {
+		tr2.position.x = tr2.position.x - sin(tr2.position.theta) * 5;
+		tr2.position.y = tr2.position.y + cos(tr2.position.theta) * 5;
+	}
+
+
+	//tr2.position.x = sin(tr2.position.theta) * tr2.position.y;
+	//tr2.position.y = cos(tr2.position.theta) * tr2.position.y;
+
 	push();
 	divBackground.position(canvasWidth - 270, canvasHeight - 215);
 
@@ -142,7 +165,9 @@ function drawTerminal (tr2) {
 }
 
 function keyPressed () {
-	if (keyCode == 13) {
+	var ENTER_KEY = 13;
+
+	if (keyCode == ENTER_KEY) {
 		var cmd = terminalInput.value();
 		parseCommand(tr2, cmd);
 		terminalInput.value("");

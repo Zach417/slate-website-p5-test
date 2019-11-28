@@ -1,6 +1,7 @@
 function drawModel (tr2) {
-
 	translate(0, 0, 15);
+	translate(tr2.position.x, tr2.position.y, 0);
+	rotateZ(tr2.position.theta);
 
 	drawLink(tr2.link.b0, 90, -90, 0, 0, 0, 0);
 	drawLink(tr2.link.b1, 0, 0, 0, 301.9, -150.2, 50.8, function () {
@@ -49,6 +50,8 @@ function drawModel (tr2) {
 	}]);
 	head.draw();
 
+	rotateZ(-tr2.position.theta);
+	translate(-tr2.position.x, -tr2.position.y, 0);
 	translate(0, 0, -15);
 }
 
